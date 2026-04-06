@@ -9,6 +9,105 @@ metadata:
   version: "2.0.0"
   data_source: "有知有行 (youzhiyouxing.cn)"
   license: MIT
+  github: https://github.com/yanglaiyang/asset-allocation
+  openclaw:
+    homepage: https://github.com/yanglaiyang/asset-allocation
+---
+
+## Installation
+
+> This section is a **self-install manifest**. Any AI agent can install this skill by
+> reading this section, detecting its platform, and executing the corresponding steps.
+
+### Quick Start
+
+1. Read this entire `## Installation` section.
+2. Detect your platform using the script below.
+3. Execute the installation steps for your platform.
+4. Verify and report the result.
+
+### Platform Detection
+
+```bash
+if [ -d "$HOME/.claude/skills" ]; then
+  echo "claude-code"
+elif [ -d "$HOME/.openclaw" ] && [ -f "$HOME/.openclaw/openclaw.json" ]; then
+  echo "openclaw"
+else
+  echo "generic"
+fi
+```
+
+### Claude Code
+
+Target: `~/.claude/skills/asset-allocation/` (auto-discovered, no registration needed)
+
+```bash
+SKILL_DIR="$HOME/.claude/skills/asset-allocation"
+REPO="https://github.com/yanglaiyang/asset-allocation.git"
+
+if [ -d "$SKILL_DIR/.git" ]; then
+  cd "$SKILL_DIR" && git pull origin main
+else
+  mkdir -p "$HOME/.claude/skills"
+  git clone "$REPO" "$SKILL_DIR"
+fi
+
+[ -f "$SKILL_DIR/SKILL.md" ] && echo "OK: installed at $SKILL_DIR" || echo "FAIL"
+```
+
+### OpenClaw
+
+Target: `~/.openclaw/skills/yanglaiyang/asset-allocation/`
+
+```bash
+SKILL_DIR="$HOME/.openclaw/skills/yanglaiyang/asset-allocation"
+REPO="https://github.com/yanglaiyang/asset-allocation.git"
+CONFIG="$HOME/.openclaw/openclaw.json"
+
+# Clone or update
+if [ -d "$SKILL_DIR/.git" ]; then
+  cd "$SKILL_DIR" && git pull origin main
+else
+  mkdir -p "$SKILL_DIR"
+  git clone "$REPO" "$SKILL_DIR"
+fi
+
+# Register in openclaw.json
+[ -f "$CONFIG" ] || echo '{"skills":{"entries":{}}}' > "$CONFIG"
+python3 -c "
+import json, os
+p = os.path.expanduser('~/.openclaw/openclaw.json')
+with open(p) as f: c = json.load(f)
+e = c.setdefault('skills',{}).setdefault('entries',{})
+k = 'asset-allocation'
+if k not in e:
+    e[k] = {'enabled': True, 'path': '$SKILL_DIR'}
+    with open(p,'w') as f: json.dump(c, f, indent=2, ensure_ascii=False)
+    print('Registered')
+else:
+    print('Already registered')
+"
+
+[ -f "$SKILL_DIR/SKILL.md" ] && echo "OK: installed at $SKILL_DIR" || echo "FAIL"
+```
+
+### Generic
+
+```bash
+git clone https://github.com/yanglaiyang/asset-allocation.git ~/ai-skills/asset-allocation
+echo "Installed. Read ~/ai-skills/asset-allocation/SKILL.md for usage."
+```
+
+### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `git: command not found` | `brew install git` (macOS) / `apt install git` (Linux) |
+| Permission denied | `ls -la $(dirname $SKILL_DIR)` to check ownership |
+| git pull conflict | `cd $SKILL_DIR && git fetch origin && git reset --hard origin/main` |
+| OpenClaw config missing | `mkdir -p ~/.openclaw && echo '{"skills":{"entries":{}}}' > ~/.openclaw/openclaw.json` |
+
 ---
 
 # 资产配置建议 Skill（知行温度计）

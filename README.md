@@ -9,6 +9,38 @@ A Claude Code Skill that provides A-share market temperature analysis and asset 
 - Macro data integration (bond temp, treasury yield, GDP, CPI)
 - Systematic investment advice based on temperature bands
 - Stock-bond comparison analysis
+- **Self-install**: works on Claude Code, OpenClaw, and any AI agent
+
+## Installation
+
+### Via AI Agent (Recommended)
+
+Tell any AI agent:
+
+> "Install the skill from github.com/yanglaiyang/asset-allocation"
+
+The agent reads `SKILL.md` from the repo, detects its platform, and executes the
+corresponding installation steps automatically. No manual configuration needed.
+
+### Manual Installation
+
+**Claude Code:**
+```bash
+git clone https://github.com/yanglaiyang/asset-allocation.git ~/.claude/skills/asset-allocation
+```
+
+**OpenClaw:**
+```bash
+git clone https://github.com/yanglaiyang/asset-allocation.git ~/.openclaw/skills/yanglaiyang/asset-allocation
+# Then register in ~/.openclaw/openclaw.json (see SKILL.md for details)
+```
+
+**Standalone:**
+```bash
+git clone https://github.com/yanglaiyang/asset-allocation.git
+cd asset-allocation
+python3 scripts/fetch_thermometer.py --help
+```
 
 ## How It Works
 
@@ -24,8 +56,9 @@ The skill fetches live thermometer data via webReader, parses the Markdown conte
 
 ```
 asset-allocation/
-├── SKILL.md                              # Skill definition (Claude Code)
+├── SKILL.md                              # Skill definition + universal install manifest
 ├── README.md                             # This file
+├── .gitignore
 ├── scripts/
 │   └── fetch_thermometer.py             # Data parser and advice generator
 └── references/
